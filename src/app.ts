@@ -1,6 +1,8 @@
-import express from 'express';
+import express from "express";
 import "express-async-errors";
 import errorMiddleware from "./middlewares/error";
+import statusCodes from "./utils/statusCode";
+import productsRouters from "./routers/product.routes";
 
 class App {
   app: express.Express;
@@ -8,7 +10,7 @@ class App {
   constructor() {
     this.app = express();
     this.#config();
-  };
+  }
 
   #config(): void {
     const accessControl: express.RequestHandler = (_req, res, next) => {
@@ -23,15 +25,20 @@ class App {
 
     this.app.use(express.json());
     this.app.use(accessControl);
-    // Rota principal para mostrar o início da API
-    this.app.get('/', (_req, res) => res.json({ OK: true }));
 
+    // Rota principal para mostrar o início da API (SERVE APENAS PARA TESTE)
+    this.app.get("/", (_req, res) =>
+      res.status(statusCodes.OK).json({ OK: true })
+    );
+    this.app.use("/products", productsRouters);
     this.app.use(errorMiddleware);
-  };
+  }
 
   start(PORT: string | number): void {
-    this.app.listen(PORT, () => console.log(`LINK API - http://localhost:${PORT}`));
-  };
+    this.app.listen(PORT, () =>
+      console.log(`LINK API - http://localhost:${PORT}`)
+    );
+  }
 }
 
 export { App };

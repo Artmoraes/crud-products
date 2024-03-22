@@ -13,6 +13,7 @@ exports.app = exports.App = void 0;
 const express_1 = __importDefault(require("express"));
 require("express-async-errors");
 const error_1 = __importDefault(require("./middlewares/error"));
+const statusCode_1 = __importDefault(require("./utils/statusCode"));
 class App {
     constructor() {
         _App_instances.add(this);
@@ -37,7 +38,7 @@ _App_instances = new WeakSet(), _App_config = function _App_config() {
     this.app.use(express_1.default.json());
     this.app.use(accessControl);
     // Rota principal para mostrar o início da API
-    this.app.get('/', (_req, res) => res.json({ OK: true }));
+    this.app.get('/', (_req, res) => res.status(statusCode_1.default.OK).json({ OK: true }));
     this.app.use(error_1.default);
 };
 // A execução dos testes de cobertura depende dessa exportação
