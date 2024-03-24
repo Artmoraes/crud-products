@@ -16,10 +16,20 @@ class ProductController {
     }
   }
 
+  async getProductById(req: Request, res: Response, next: NextFunction) {
+    try {
+      const products = await this.productService.getProductById(req.params.id);
+      return res.status(statusCodes.OK).json(products);
+    } catch (error) {
+      console.error("error getProducts =>", error);
+      next(error);
+    }
+  }
+
   async createProduct(req: Request, res: Response, next: NextFunction) {
     try {
       const infoProducts = createProductSchema.parse(req.body);
-      await this.productService.searchProductByName(infoProducts);
+      await this.productService.getProductByName(infoProducts);
       await this.productService.createProduct(infoProducts);
       return res.status(statusCodes.OK).json({ message: "Produto inserido com sucesso!" });
     } catch (error) {
@@ -27,6 +37,19 @@ class ProductController {
       next(error);
     }
   }
+
+  // async updateProduct(req: Request, res: Response, next: NextFunction) {
+  //   try {
+  //     // const infoProducts = updateProductSchema.parse(req.body);
+  //     // await this.productService.searchProductById(req.params.id);
+  //     // await this.productService.updateProduct(infoProducts);
+  //     return res.status(statusCodes.OK).json({ message: "Produto inserido com sucesso!" });
+  //   } catch (error) {
+  //     console.error("error updateProduct =>", error);
+  //     next(error);
+  //   }
+  // }
+
 }
 
 export default ProductController;

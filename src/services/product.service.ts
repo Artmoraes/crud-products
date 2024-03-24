@@ -20,7 +20,7 @@ export default class ProductService implements IProductService {
     }
   }
 
-  async searchProductByName(
+  async getProductByName(
     informationProduct: IProductInterface
   ): Promise<Product | null> {
     try {
@@ -30,6 +30,18 @@ export default class ProductService implements IProductService {
         throw new Error("Já existe um produto com esse nome");
       }
       return null;
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async getProductById(id: string): Promise<Product | null> {
+    try {
+      const product: Product | null = await Product.findByPk(id);
+      if (!product) {
+        throw new Error("Produto não existe ou não foi encontrado");
+      }
+      return product;
     } catch (error) {
       throw error;
     }
