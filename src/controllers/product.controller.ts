@@ -14,6 +14,16 @@ class ProductController {
       next(error);
     }
   }
+
+  async createProduct(req: Request, res: Response, next: NextFunction) {
+    try {
+      const products = await this.productService.createProduct(req.body);
+      return res.status(statusCodes.OK).json(products);
+    } catch (error) {
+      console.error("error ", error);
+      next(error);
+    }
+  }
 }
 
 export default ProductController;

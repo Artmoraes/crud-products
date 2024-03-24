@@ -28,7 +28,9 @@ class App {
 
     // Rota principal para mostrar o início da API (SERVE APENAS PARA TESTE)
     this.app.get("/", (_req, res) =>
-      res.status(statusCodes.OK).json({ OK: true })
+      res
+        .status(statusCodes.OK)
+        .json({ message: "Welcome to the API of Products" })
     );
     this.app.use("/products", productsRouters);
     this.app.use(errorMiddleware);
