@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import { IProductService } from "../interfaces/IFunctions/IProductService.interface";
 import statusCodes from "../utils/statusCode";
+import createProductSchema from "../validator/product/createProduct.validator";
 
 class ProductController {
   constructor(private productService: IProductService) {}
@@ -10,17 +11,19 @@ class ProductController {
       const products = await this.productService.getProducts();
       return res.status(statusCodes.OK).json(products);
     } catch (error) {
-      console.error("error ", error);
+      console.error("error getProducts =>", error);
       next(error);
     }
   }
 
   async createProduct(req: Request, res: Response, next: NextFunction) {
     try {
-      const products = await this.productService.createProduct(req.body);
-      return res.status(statusCodes.OK).json(products);
+      const infoProducts = createProductSchema.parse(req.body);
+      await this.productService.searchProductByName(infoProducts);
+      await this.productService.createProduct(infoProducts);
+      return res.status(statusCodes.OK).json({ message: "Produto inserido com sucesso!" });
     } catch (error) {
-      console.error("error ", error);
+      console.error("error createProduct =>", error);
       next(error);
     }
   }

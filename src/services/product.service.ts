@@ -11,12 +11,25 @@ export default class ProductService implements IProductService {
     }
   }
 
-  async createProduct(
-    informationProducts: IProductInterface
-  ): Promise<Product> {
+  async createProduct(informationProduct: IProductInterface): Promise<Product> {
     try {
-      const { name, description, value, stock } = informationProducts;
+      const { name, description, value, stock } = informationProduct;
       return Product.create({ name, description, value, stock });
+    } catch (error) {
+      throw error;
+    }
+  }
+
+  async searchProductByName(
+    informationProduct: IProductInterface
+  ): Promise<Product | null> {
+    try {
+      const { name } = informationProduct;
+      const checkExistProduct = await Product.findOne({ where: { name } });
+      if (checkExistProduct) {
+        throw new Error("Já existe um produto com esse nome");
+      }
+      return null;
     } catch (error) {
       throw error;
     }
