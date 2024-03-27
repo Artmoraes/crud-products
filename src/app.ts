@@ -1,15 +1,14 @@
 import "reflect-metadata";
 import "./providers";
-import express from "express";
 import "express-async-errors";
+import express from "express";
 import errorMiddleware from "./middlewares/error";
 import statusCodes from "./utils/statusCode";
 import productsRouters from "./routers/product.routes";
-import verifyToken from "./middlewares/verifyToken";
+import JWTToken from "./middlewares/verifyToken";
 
 class App {
   app: express.Express;
-
   constructor() {
     this.app = express();
     this.#config();
@@ -35,7 +34,7 @@ class App {
         .status(statusCodes.OK)
         .json({ message: "Welcome to the API of Products" })
     );
-    this.app.use("/products", verifyToken, productsRouters);
+    this.app.use("/products", JWTToken.verifyToken, productsRouters);
     this.app.use(errorMiddleware);
   }
 
