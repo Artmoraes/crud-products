@@ -1,11 +1,14 @@
 import { Router } from "express";
-import { productController } from "./main.routes";
+import { container } from "tsyringe";
+import ProductController from "../controllers/product.controller";
 
 const router = Router();
 
-router.get("/", (req, res, next) =>
+const productController = container.resolve(ProductController);
+
+router.get("/", (req, res, next) => {
   productController.getProducts(req, res, next)
-);
+});
 
 router.get("/:id", (req, res, next) =>
   productController.getProductById(req, res, next)

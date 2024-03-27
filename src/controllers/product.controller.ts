@@ -3,14 +3,18 @@ import { IProductService } from "../interfaces/IFunctions/IProductService.interf
 import statusCodes from "../utils/statusCode";
 import createProductSchema from "../validator/product/createProduct.validator";
 import updateProductSchema from "../validator/product/updateProduct.validator";
+import { inject, injectable } from "tsyringe";
 
+@injectable()
 class ProductController {
-  constructor(private productService: IProductService) {}
+  constructor(@inject("ProductService") private productService: IProductService) {}
 
-  async getProducts(_req: Request, res: Response, next: NextFunction) {
+  async getProducts(req: Request, res: Response, next: NextFunction) {
     try {
-      const products = await this.productService.getProducts();
-      return res.status(statusCodes.OK).json(products);
+      const page: number = parseInt(req.query.page as string) || 1;
+      const pageSize: number = parseInt(req.query.pageSize as string) || 10;
+      const result = await this.productService.getProducts(page, pageSize);
+      return res.status(statusCodes.OK).json(result);
     } catch (error) {
       console.error("error getProducts =>", error);
       next(error);

@@ -3,9 +3,17 @@ import Product from "../database/models/Product.model";
 import { IProductInterface } from "../interfaces/IProduct.interface";
 
 export default class ProductService implements IProductService {
-  getProducts(): Promise<Product[] | null> {
+  // constructor(@inject("Product") private ProductModel: typeof Product) {}
+
+  async getProducts(page: number, pageSize: number): Promise<{ products: IProductInterface[], totalItems: number } | null> {
     try {
-      return Product.findAll();
+      const offset = (page - 1) * pageSize;
+
+      const { rows: products, count: totalItems } = await Product.findAndCountAll({
+        limit: pageSize,
+        offset: offset,
+      });
+      return { products, totalItems };
     } catch (error) {
       throw error;
     }
