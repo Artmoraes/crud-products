@@ -5,6 +5,7 @@ import "express-async-errors";
 import errorMiddleware from "./middlewares/error";
 import statusCodes from "./utils/statusCode";
 import productsRouters from "./routers/product.routes";
+import verifyToken from "./middlewares/verifyToken";
 
 class App {
   app: express.Express;
@@ -34,7 +35,7 @@ class App {
         .status(statusCodes.OK)
         .json({ message: "Welcome to the API of Products" })
     );
-    this.app.use("/products", productsRouters);
+    this.app.use("/products", verifyToken, productsRouters);
     this.app.use(errorMiddleware);
   }
 
