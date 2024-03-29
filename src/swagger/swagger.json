@@ -1,0 +1,75 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API de Produtos",
+    "description": "API com funcionalidade de CRUD de Produtos",
+    "contact": {
+      "email": "arthurbarrosdev@gmail.com"
+    },
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:3000",
+      "description": "URL de desenvolvimento"
+    }
+  ],
+  "paths": {
+    "/products": {
+      "post": {
+        "summary": "Cadastro de Produto",
+        "description": "Rota responsável por realizar o cadastro do produto",
+        "tags": ["Products"],
+        "headers": {
+          "Authorization": {
+            "description": "Token de autenticação",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJASlqo1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IkhTQVVESEFJVVNIRElBIiwHSAUIjoxNzExNTgyMjg1LCJleHAiOjQ4NjczNDIyODV9.OOhT9DsJtpbYt3rB9QwTqwd942JYrw8RDsJ7g0uvzxag"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              },
+              "examples": {
+                "product": {
+                  "value": {
+                    "name": "Amaciante",
+                    "description": "Serve para colocar na roupa",
+                    "value": 1.99,
+                    "stock": 7
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "Product": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "value": {
+            "type": "number"
+          },
+          "stock": {
+            "type": "number"
+          }
+        }
+      }
+    }
+  }
+}

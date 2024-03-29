@@ -1,6 +1,7 @@
 import "dotenv/config";
 import { NextFunction, Request, Response } from "express";
 import jwt from "jsonwebtoken";
+import statusCodes from "../utils/statusCode";
 
 class JWTToken {
   createToken(): string {
@@ -11,9 +12,9 @@ class JWTToken {
     return jwt.sign({}, secret, { expiresIn: "100y" });
   }
 
-  verifyToken(req: Request, _res: Response, next: NextFunction) {
+  verifyToken(req: Request, res: Response, next: NextFunction) {
     try {
-      const token = req.headers.token as string;
+      const token = req.headers.authorization as string;
       if (!token) {
         throw new Error("Token não fornecido. Acesso inválido.");
       }
@@ -23,10 +24,11 @@ class JWTToken {
         throw new Error("Chave secreta não definida.");
       }
       jwt.verify(token, secret);
-
+      
       return next();
     } catch (err: any | unknown) {
-      return next(err);
+ console.log("err ", err);
+      return res.status(statusCodes.UNAUTHORIZED).json(err);
     }
   }
 }
