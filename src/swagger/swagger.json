@@ -16,6 +16,85 @@
   ],
   "paths": {
     "/products": {
+      "get": {
+        "summary": "Listar Produtos",
+        "description": "Rota responsável por realizar a listagem dos produtos",
+        "tags": ["Products"],
+        "headers": {
+          "Authorization": {
+            "description": "Token de autenticação",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJASlqo1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IkhTQVVESEFJVVNIRElBIiwHSAUIjoxNzExNTgyMjg1LCJleHAiOjQ4NjczNDIyODV9.OOhT9DsJtpbYt3rB9QwTqwd942JYrw8RDsJ7g0uvzxag"
+          }
+        },
+        "parameters": [
+          {
+            "in": "query",
+            "name": "page",
+            "description": "Número da página",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "2"
+          },
+          {
+            "in": "query",
+            "name": "pageSize",
+            "description": "Tamanho de produtos por página",
+            "schema": {
+              "type": "integer"
+            },
+            "example": "10"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "type": "array",
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                },
+                "examples": {
+                  "product": {
+                    "value": [
+                      {
+                        "id": 1,
+                        "name": "Amaciante",
+                        "description": "Serve para colocar na roupa",
+                        "value": 5.99,
+                        "stock": 3
+                      },
+                      {
+                        "id": 2,
+                        "name": "Detergente",
+                        "description": "Serve para lavar coisas",
+                        "value": 0.98,
+                        "stock": 7
+                      },
+                      {
+                        "id": 3,
+                        "name": "Desinfetante",
+                        "description": "Serve para passar na casa",
+                        "value": 4.95,
+                        "stock": 9
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado. Token de autenticação inválido."
+          },
+          "404": {
+            "description": "Produto não encontrado"
+          }
+        }
+      },
       "post": {
         "summary": "Cadastro de Produto",
         "description": "Rota responsável por realizar o cadastro do produto",
@@ -46,6 +125,167 @@
                 }
               }
             }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Produto cadastrado com sucesso"
+          },
+          "401": {
+            "description": "Não autorizado. Token de autenticação inválido."
+          },
+          "500": {
+            "description": "Erro interno do servidor. Verifique os campos do produto."
+          }
+        }
+      },
+      "delete": {
+        "summary": "Deletar Produto",
+        "description": "Rota responsável por realizar a exclusão do produto",
+        "tags": ["Products"],
+        "headers": {
+          "Authorization": {
+            "description": "Token de autenticação",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJASlqo1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IkhTQVVESEFJVVNIRElBIiwHSAUIjoxNzExNTgyMjg1LCJleHAiOjQ4NjczNDIyODV9.OOhT9DsJtpbYt3rB9QwTqwd942JYrw8RDsJ7g0uvzxag"
+          }
+        },
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "examples": {
+                "product": {
+                  "value": {
+                    "id": "2"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Produto deletado com sucesso"
+          },
+          "401": {
+            "description": "Não autorizado. Token de autenticação inválido."
+          },
+          "404": {
+            "description": "Produto não encontrado"
+          }
+        }
+      }
+    },
+    "/products/{id}": {
+      "get": {
+        "summary": "Obter Produto por ID",
+        "description": "Rota responsável por obter um produto específico pelo seu ID",
+        "tags": ["Products"],
+        "headers": {
+          "Authorization": {
+            "description": "Token de autenticação",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJASlqo1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IkhTQVVESEFJVVNIRElBIiwHSAUIjoxNzExNTgyMjg1LCJleHAiOjQ4NjczNDIyODV9.OOhT9DsJtpbYt3rB9QwTqwd942JYrw8RDsJ7g0uvzxag"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID do produto a ser obtido",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "5"
+          }
+        ],
+        "responses": {
+          "200": {
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Product"
+                },
+                "examples": {
+                  "product": {
+                    "value": {
+                      "id": 5,
+                      "name": "Saleiro",
+                      "description": "Serve para armazenar sal",
+                      "value": 2.99,
+                      "stock": 3
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Não autorizado. Token de autenticação inválido."
+          },
+          "404": {
+            "description": "Produto não encontrado"
+          }
+        }
+      },
+      "put": {
+        "summary": "Atualização de Produto",
+        "description": "Rota responsável por realizar a atualização do produto",
+        "tags": ["Products"],
+        "headers": {
+          "Authorization": {
+            "description": "Token de autenticação",
+            "schema": {
+              "type": "string"
+            },
+            "example": "eyJhbGciOiJASlqo1NiIsInR5cCI6IkpXVCJ9.eyJ0b2tlbiI6IkhTQVVESEFJVVNIRElBIiwHSAUIjoxNzExNTgyMjg1LCJleHAiOjQ4NjczNDIyODV9.OOhT9DsJtpbYt3rB9QwTqwd942JYrw8RDsJ7g0uvzxag"
+          }
+        },
+        "parameters": [
+          {
+            "in": "path",
+            "name": "id",
+            "description": "ID do produto a ser obtido para ser atualizado",
+            "required": true,
+            "schema": {
+              "type": "string"
+            },
+            "example": "4"
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/Product"
+              },
+              "examples": {
+                "product": {
+                  "value": {
+                    "name": "Whey Protein",
+                    "description": "Serve para colocar na roupa",
+                    "value": 1.99,
+                    "stock": 7
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Produto atualizado com sucesso"
+          },
+          "401": {
+            "description": "Não autorizado. Token de autenticação inválido."
+          },
+          "500": {
+            "description": "Erro interno do servidor. Verifique os campos do produto."
           }
         }
       }

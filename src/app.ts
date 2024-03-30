@@ -39,9 +39,6 @@ class App {
     );
     this.app.use("/documentation", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
     this.app.use("/products", JWTToken.verifyToken, productsRouters);
-    // this.app.use((_req: Request, res: Response, _next: NextFunction) => {
-    //   res.status(404).json({ message: 'Rota não encontrada' });
-    // });
     this.app.use(errorMiddleware);
   }
 

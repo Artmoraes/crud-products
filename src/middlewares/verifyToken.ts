@@ -15,20 +15,15 @@ class JWTToken {
   verifyToken(req: Request, res: Response, next: NextFunction) {
     try {
       const token = req.headers.authorization as string;
-      if (!token) {
-        throw new Error("Token não fornecido. Acesso inválido.");
+      const secret: string | undefined = process.env.TOKEN;
+      if (token !== secret) {
+        throw new Error("Usuário não autorizado");
       }
 
-      const secret: string | undefined = process.env.TOKEN;
-      if (!secret) {
-        throw new Error("Chave secreta não definida.");
-      }
-      jwt.verify(token, secret);
-      
       return next();
     } catch (err: any | unknown) {
- console.log("err ", err);
-      return res.status(statusCodes.UNAUTHORIZED).json(err);
+      console.log("err ", err);
+      return res.status(statusCodes.UNAUTHORIZED).json({ message: err.message });
     }
   }
 }
