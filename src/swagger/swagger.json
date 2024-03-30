@@ -134,8 +134,8 @@
           "401": {
             "description": "Não autorizado. Token de autenticação inválido."
           },
-          "500": {
-            "description": "Erro interno do servidor. Verifique os campos do produto."
+          "400": {
+            "description": "Erro interno do servidor. Verifique os requisitos dos campos do produto."
           }
         }
       },
@@ -284,8 +284,8 @@
           "401": {
             "description": "Não autorizado. Token de autenticação inválido."
           },
-          "500": {
-            "description": "Erro interno do servidor. Verifique os campos do produto."
+          "400": {
+            "description": "Erro interno do servidor. Verifique os requisitos dos campos do produto."
           }
         }
       }

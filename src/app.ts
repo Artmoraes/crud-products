@@ -21,14 +21,13 @@ class App {
       res.header("Access-Control-Allow-Origin", "*");
       res.header(
         "Access-Control-Allow-Methods",
-        "GET,POST,DELETE,OPTIONS,PUT,PATCH"
+        "GET,POST,PUT,DELETE"
       );
       res.header("Access-Control-Allow-Headers", "*");
       next();
     };
 
     this.app.use(express.json());
-    this.app.use(express.static('public'));
     this.app.use(accessControl);
 
     // Rota principal para mostrar o início da API (SERVE APENAS PARA TESTE)
